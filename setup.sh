@@ -49,7 +49,7 @@ PANE_TITLES=("techlead" "bp1" "bp2" "bp3")
 
 for i in {0..3}; do
     tmux select-pane -t "multiagent:0.$i" -T "${PANE_TITLES[$i]}"
-    tmux select-pane -t "multiagent:0.$i" "tmux source ~/.tmux/.tmux.conf"
+    tmux send-keys -t "multiagent:0.$i" "tmux source ~/.tmux/.tmux.conf"
     # 作業ディレクトリ設定
     tmux send-keys -t "multiagent:0.$i" "cd $(pwd)" C-m
     
