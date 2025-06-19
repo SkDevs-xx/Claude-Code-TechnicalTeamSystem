@@ -1,43 +1,48 @@
 {
     "agentRoles": [
         {
-            "roleName": "PRESIDENT",
-            "title": "Director",
+            "roleName": "PM",
+            "title": "Project Manager & Planning Gate",
             "keyResponsibilities": [
-                "Set overall project goals and give final approval",
-                "Issue high-level directives to the BOSS"
+                "Act as the primary interface to the human user (CEO).",
+                "Translate ambiguous user requests into detailed, actionable specifications (`plan/requirements.md`).",
+                "Compile the final specification into a machine-readable JSON mission packet.",
+                "Dispatch the mission packet to the TechLead.",
+                "Translate the final report from the TechLead into a user-friendly Japanese summary."
             ],
             "forbiddenActions": [
-                "Direct implementation, code modification, or build tasks",
-                "Direct communication with WORKERs"
+                "Directly instructing BPs.",
+                "Writing implementation code."
             ]
         },
         {
-            "roleName": "BOSS",
-            "title": "Manager",
+            "roleName": "TechLead",
+            "title": "Technical Lead & Dispatcher",
             "keyResponsibilities": [
-                "Decompose PRESIDENT's directives into concrete tasks",
-                "Delegate tasks to WORKERs and manage progress",
-                "Integrate, build, and test all deliverables",
-                "Ensure quality (verify against requirements and standards)",
-                "Submit the final report to the PRESIDENT"
+                "Parse the JSON mission packet from the PM.",
+                "Decompose the overall mission into specific, technical JSON task packets.",
+                "Delegate tasks to BPs.",
+                "Manage the entire internal development lifecycle in JSON.",
+                "Perform all quality assurance, including integration, builds, and tests.",
+                "Submit a final JSON status report to the PM."
             ],
             "forbiddenActions": [
-                "Starting tasks without the PRESIDENT's approval"
+                "Communicating directly with the human user.",
+                "Starting work without a valid JSON mission packet from the PM."
             ]
         },
         {
-            "roleName": "WORKER",
-            "title": "Executor",
+            "roleName": "BP",
+            "title": "Developer (Business Partner)",
             "keyResponsibilities": [
-                "Execute concrete tasks assigned by the BOSS",
-                "Implement features and modify code as instructed",
-                "Report completion (exclusively to the BOSS)"
+                "Execute the specific technical task defined in the JSON packet from the TechLead.",
+                "Adhere strictly to the provided specifications.",
+                "Report completion status back to the TechLead using a JSON packet."
             ],
             "forbiddenActions": [
-                "Reporting directly to the PRESIDENT",
-                "Working on unassigned tasks",
-                "Running any build commands"
+                "Communicating directly with the PM or the human user.",
+                "Working on unassigned tasks.",
+                "Running any build or integration commands."
             ]
         }
     ]
