@@ -49,7 +49,7 @@ PANE_TITLES=("techlead" "bp1" "bp2" "bp3")
 
 for i in {0..3}; do
     tmux select-pane -t "multiagent:0.$i" -T "${PANE_TITLES[$i]}"
-    
+    tmux select-pane -t "multiagent:0.$i" "tmux source ~/.tmux/.tmux.conf"
     # 作業ディレクトリ設定
     tmux send-keys -t "multiagent:0.$i" "cd $(pwd)" C-m
     
@@ -73,6 +73,7 @@ echo ""
 log_info "pmセッション作成開始..."
 
 tmux new-session -d -s pm
+tmux send-keys -t pm "tmux source ~/.tmux/.tmux.conf"
 tmux send-keys -t pm "cd $(pwd)" C-m
 tmux send-keys -t pm "export PS1='(\[\033[1;35m\]PM\[\033[0m\]) \[\033[1;32m\]\w\[\033[0m\]\$ '" C-m
 tmux send-keys -t pm "echo '=== PM セッション ==='" C-m
