@@ -38,7 +38,7 @@ EOF
 show_agents() {
     echo "📋 利用可能なエージェント:"
     echo "=========================="
-    echo "  PM          → PM:0           (プロジェクト統括責任者)"
+    echo "  PM          → pm:0           (プロジェクト統括責任者)"
     echo "  Techlead    → multiagent:0.0 (チームリーダー)"
     echo "  BP1         → multiagent:0.1 (実行担当者A)"
     echo "  BP2         → multiagent:0.2 (実行担当者B)" 
