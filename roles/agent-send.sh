@@ -3,7 +3,7 @@
 # エージェント→tmuxターゲット マッピング
 get_agent_target() {
     case "$1" in
-        "pm") echo "PM" ;;
+        "pm") echo "pm" ;;
         "techlead") echo "multiagent:0.0" ;;
         "bp1") echo "multiagent:0.1" ;;
         "bp2") echo "multiagent:0.2" ;;
