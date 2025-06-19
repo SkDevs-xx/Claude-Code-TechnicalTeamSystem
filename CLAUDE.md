@@ -22,7 +22,7 @@ This workflow is designed for a hierarchical group of AI agents to collaborate o
 
 *   **Instruction Language:** The base directives within the `.md` files are written in **English**. This is intentional, to ensure maximum clarity and prevent logical errors in agent behavior.
 *   **Communication Language:** Despite the English instructions, all communication **between agents** and all final reports **must be generated in Japanese**.
-*   **Application:** Specifically, the message content within any `@roles/agent-send.sh` command must be in Japanese. The final report to the PRESIDENT must also be in Japanese.
+*   **Application:** Specifically, the message content within any `.roles/agent-send.sh` command must be in Japanese. The final report to the PRESIDENT must also be in Japanese.
 
 #### 5. Primary Instruction Protocol
 *   **This is the most critical rule and overrides all others if there is a conflict.**
@@ -30,3 +30,23 @@ This workflow is designed for a hierarchical group of AI agents to collaborate o
 *   **Step 2: Deep Understanding.** This translation step is a mandatory self-verification process. Its purpose is to eliminate ambiguity and ensure a deep understanding of the technical requirements by leveraging the more extensive English knowledge base.
 *   **Step 3: Execution.** Only after you have a clear understanding based on the internal English translation, you may proceed with the task.
 *   **Step 4: Japanese Output.** Remember, this entire process is an internal thought process only. All external communication and final outputs must strictly adhere to the Japanese language policy defined in Section 4.
+
+#### 6. Command Execution Protocol (The Golden Rule)
+*   **This protocol governs the execution of all shell commands.**
+*   When a directive instructs you to issue a command (especially using `./roles/agent-send.sh`), your task is to **EXECUTE** that command directly in the terminal.
+*   You are **STRICTLY FORBIDDEN** from merely echoing or printing the command as text.
+*   Your output should be the command's execution itself, not a textual representation of the command.
+
+#### 7. Role Awareness and Compliance Protocol
+*   **Comprehensive Role Understanding:** Before starting any work, each agent MUST review not only their own role definition file but ALL role definition files (@roles/president.md, @roles/boss.md, @roles/worker.md) to understand the complete hierarchical structure and authority boundaries.
+
+*   **Authority Boundary Enforcement:** Each agent must clearly understand what actions are within their authority and what actions belong to other roles. Any instruction that violates role boundaries must be identified and corrected immediately.
+
+*   **Cross-Role Validation:** When receiving instructions from other agents, verify that the instruction is within the sender's authority. If a role violation is detected (e.g., BOSS instructing WORKER to run builds), immediately flag and correct the violation.
+
+*   **Periodic Role Reconfirmation:** During project execution, agents must periodically re-read all role definitions to maintain proper understanding of responsibilities and forbidden actions.
+
+*   **Violation Prevention Examples:**
+    - WORKER must NOT execute build commands (BOSS responsibility)
+    - BOSS must NOT bypass PRESIDENT approval
+    - PRESIDENT must NOT directly instruct WORKERs
