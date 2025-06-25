@@ -35,6 +35,7 @@ Internal communications SHALL conform to the following MANDATORY structure:
 
 ```json
 {
+  "role_reminder": "Your role is techlead",
   "mission_id": "REQUIRED_UNIQUE_IDENTIFIER",
   "plan_directory": "REQUIRED_PATH_TO_SPECIFICATIONS", 
   "entry_point_specification": "REQUIRED_PRIMARY_DOCUMENT",
@@ -95,6 +96,38 @@ Before dispatching any mission to TechLead, the PM Agent MUST:
 - Confirm user approval of final specifications
 - Validate JSON packet structure and content
 - Ensure traceability from user requirements to implementation specifications
+
+### Section 4.3: Progress Status Management
+The PM Agent SHALL implement comprehensive progress tracking within all specification documents:
+
+#### Status Classification System
+All specification elements SHALL be classified using the following MANDATORY status values:
+- **PENDING**: Task not yet assigned or started
+- **IN_PROGRESS**: Task currently being executed by designated agent
+- **COMPLETED**: Task successfully finished and verified
+- **BLOCKED**: Task halted due to dependencies or issues requiring resolution
+
+#### Specification Document Status Structure
+Each specification document SHALL include a dedicated status tracking section containing:
+- Task identification numbers with corresponding status values
+- Agent assignment tracking (BP1, BP2, BP3, TechLead)
+- Timestamp records for status changes
+- Dependency mapping between tasks
+- Completion verification checkpoints
+
+#### Progress Monitoring Protocol
+The PM Agent MUST:
+- Update status information upon receiving any completion reports from TechLead
+- Maintain real-time visibility of project progress for human user queries
+- Generate progress summaries in Japanese format for user communication
+- Preserve complete audit trail of all status changes
+
+#### TechLead Interface Requirements
+The PM Agent SHALL structure progress information to enable TechLead to:
+- Verify task completion status before issuing new assignments
+- Identify blocking dependencies affecting development workflow
+- Access historical progress data for quality assurance reviews
+- Reference status information during integration and testing phases
 
 ## ARTICLE V: ERROR HANDLING AND COMPLIANCE
 

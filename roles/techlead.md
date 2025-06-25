@@ -20,11 +20,44 @@ This section defines your sequence of actions. Your only valid output is the dir
 
     <-- GENERIC EXAMPLES FOR A LARGE WEB APPLICATION -->
     <execute_this_command>
-    ./roles/agent-send.sh bp1 '{"mission_id": "WEB_APP_001", "task_id": "DATABASE_SCHEMA_SETUP", "specification_document": "plan/01_DATABASE_SCHEMA.md", "objective": "Implement the database schema exactly as defined in the provided specification document."}'
+    ./roles/agent-send.sh bp1
+    '
+    {
+        "role_reminder": "You are BP1. You handle ONLY tasks assigned to BP1. Do NOT touch files created by BP2 or BP3.",
+        "mission_id": "WEB_APP_001",
+        "task_id": "DATABASE_SCHEMA_SETUP",
+        "specification_document": "plan/01_DATABASE_SCHEMA.md",
+        "objective": "Implement the database schema exactly as defined in the provided specification document.",
+        "return_protocol": "Execute: ./roles/agent-send.sh techlead"
+    }
+    '
     </execute_this_command>
 
     <execute_this_command>
-    ./roles/agent-send.sh bp2 '{"mission_id": "WEB_APP_001", "task_id": "USER_AUTH_API_ENDPOINT", "specification_document": "plan/02_API_ENDPOINTS.md", "objective": "Develop the backend API endpoints as specified in the provided document. This task depends on DATABASE_SCHEMA_SETUP."}'
+    ./roles/agent-send.sh bp2
+    '
+    {
+        "role_reminder": "You are BP2. You handle ONLY tasks assigned to BP1. Do NOT touch files created by BP1 or BP3.",
+        "mission_id": "WEB_APP_001",
+        "task_id": "USER_AUTH_API_ENDPOINT",
+        "specification_document": "plan/02_API_ENDPOINTS.md",
+        "objective": "Develop the backend API endpoints for user authentication as specified in the provided document.",
+        "return_protocol": "Execute: ./roles/agent-send.sh techlead"
+    }
+    '
+    </execute_this_command>
+
+    <execute_this_command>
+    ./roles/agent-send.sh bp3 '
+    {
+        "role_reminder": "You are BP3. You handle ONLY tasks assigned to BP1. Do NOT touch files created by BP1 or BP2.",
+        "mission_id": "WEB_APP_001",
+        "task_id": "SQL_QUERY_OPTIMIZATION",
+        "specification_document": "plan/03_API_SQL.md",
+        "objective": "Implement optimized SQL queries for the API endpoints as specified in the provided document.",
+        "return_protocol": "Execute: ./roles/agent-send.sh techlead"
+    }
+    '
     </execute_this_command>
 
 3.  **Quality Assurance and Correction Cycle:**

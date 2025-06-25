@@ -32,7 +32,35 @@
             ]
         },
         {
-            "roleName": "BP",
+            "roleName": "BP1",
+            "title": "Developer (Business Partner)",
+            "keyResponsibilities": [
+                "Execute the specific technical task defined in the JSON packet from the TechLead.",
+                "Adhere strictly to the provided specifications.",
+                "Report completion status back to the TechLead using a JSON packet."
+            ],
+            "forbiddenActions": [
+                "Communicating directly with the PM or the human user.",
+                "Working on unassigned tasks.",
+                "Running any build or integration commands."
+            ]
+        },
+        {
+            "roleName": "BP2",
+            "title": "Developer (Business Partner)",
+            "keyResponsibilities": [
+                "Execute the specific technical task defined in the JSON packet from the TechLead.",
+                "Adhere strictly to the provided specifications.",
+                "Report completion status back to the TechLead using a JSON packet."
+            ],
+            "forbiddenActions": [
+                "Communicating directly with the PM or the human user.",
+                "Working on unassigned tasks.",
+                "Running any build or integration commands."
+            ]
+        },
+        {
+            "roleName": "BP3",
             "title": "Developer (Business Partner)",
             "keyResponsibilities": [
                 "Execute the specific technical task defined in the JSON packet from the TechLead.",

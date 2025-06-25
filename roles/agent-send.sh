@@ -1,5 +1,6 @@
 #!/bin/bash
-# Agent間メッセージ送信スクリプト
+# 改良版：Agent間メッセージ送信スクリプト
+
 # エージェント→tmuxターゲット マッピング
 get_agent_target() {
     case "$1" in
@@ -12,62 +13,58 @@ get_agent_target() {
     esac
 }
 
-show_usage() {
-    cat << EOF
-Agent間メッセージ送信
-
-使用方法:
-  $0 [エージェント名] [メッセージ]
-  $0 --list
-
-利用可能エージェント:
-  PM       - プロジェクト統括責任者
-  Techlead - 技術・開発チームのリーダー 
-  BP1      - 実行担当者A
-  BP2      - 実行担当者B
-  BP3      - 実行担当者C
-
-使用例:
-  $0 PM "指示書に従って"
-  $0 Techlead "World プロジェクト開始指示"
-  $0 BP1 "作業完了しました"
-EOF
+# 送信元を環境変数から取得（またはコマンドライン引数）
+get_sender_role() {
+    # 環境変数 AGENT_ROLE が設定されていればそれを使用
+    if [[ -n "$AGENT_ROLE" ]]; then
+        echo "$AGENT_ROLE"
+    else
+        # tmuxペイン情報から推測
+        local pane_info=$(tmux display-message -p '#S:#I.#P')
+        case "$pane_info" in
+            "pm:0.0") echo "pm" ;;
+            "multiagent:0.0") echo "techlead" ;;
+            "multiagent:0.1") echo "bp1" ;;
+            "multiagent:0.2") echo "bp2" ;;
+            "multiagent:0.3") echo "bp3" ;;
+            *) echo "unknown" ;;
+        esac
+    fi
 }
 
-# エージェント一覧表示
-show_agents() {
-    echo "📋 利用可能なエージェント:"
-    echo "=========================="
-    echo "  PM          → pm:0           (プロジェクト統括責任者)"
-    echo "  Techlead    → multiagent:0.0 (チームリーダー)"
-    echo "  BP1         → multiagent:0.1 (実行担当者A)"
-    echo "  BP2         → multiagent:0.2 (実行担当者B)" 
-    echo "  BP3         → multiagent:0.3 (実行担当者C)"
-}
-
-# ログ記録
-log_send() {
-    local agent="$1"
-    local message="$2"
-    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+# コンテキストプレフィックスを生成
+generate_prefix() {
+    local sender="$1"
+    local receiver="$2"
     
-    mkdir -p logs
-    echo "[$timestamp] $agent: SENT - \"$message\"" >> logs/send_log.txt
+    case "$sender-$receiver" in
+        "pm-techlead") echo "[MISSION FROM PM]" ;;
+        "techlead-bp"*) echo "[TASK FROM TECHLEAD]" ;;
+        "bp"*"-techlead") echo "[REPORT FROM BP$sender]" ;;
+        "techlead-pm") echo "[STATUS FROM TECHLEAD]" ;;
+        *) echo "[MESSAGE FROM $sender TO $receiver]" ;;
+    esac
 }
 
-# メッセージ送信
+# メッセージ送信（改良版）
 send_message() {
     local target="$1"
     local message="$2"
+    local sender="$3"
+    local receiver="$4"
     
-    echo "送信中: $target ← '$message'"
+    # プレフィックスを生成
+    local prefix=$(generate_prefix "$sender" "$receiver")
+    
+    echo "送信中: $sender → $receiver ($target)"
+    echo "プレフィックス: $prefix"
     
     # Claude Codeのプロンプトを一度クリア
     tmux send-keys -t "$target" C-c
     sleep 0.3
     
-    # メッセージ送信
-    tmux send-keys -t "$target" "$message"
+    # プレフィックス付きメッセージ送信
+    tmux send-keys -t "$target" "$prefix: $message"
     sleep 0.1
     
     # エンター押下
@@ -75,64 +72,72 @@ send_message() {
     sleep 0.5
 }
 
-# ターゲット存在確認
-check_target() {
-    local target="$1"
-    local session_name="${target%%:*}"
-    
-    if ! tmux has-session -t "$session_name" 2>/dev/null; then
-        echo "❌ セッション '$session_name' が見つかりません"
-        return 1
-    fi
-    
-    return 0
+# 使用方法の表示（改良版）
+show_usage() {
+    cat << EOF
+改良版Agent間メッセージ送信
+
+使用方法:
+  $0 [受信エージェント] [メッセージ] [送信元エージェント（オプション）]
+  $0 --list
+
+環境変数:
+  AGENT_ROLE - 送信元エージェントを指定（pm, techlead, bp1, bp2, bp3）
+
+使用例:
+  # 送信元を明示的に指定
+  $0 techlead '{"mission_id": "TEST"}' pm
+  
+  # 環境変数で送信元を設定
+  export AGENT_ROLE=pm
+  $0 techlead '{"mission_id": "TEST"}'
+  
+  # 自動検出（tmuxペイン情報から）
+  $0 bp1 '{"task_id": "DB_SETUP"}'
+EOF
 }
 
-# メイン処理
+# メイン処理（改良版）
 main() {
-    if [[ $# -eq 0 ]]; then
+    if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]]; then
         show_usage
-        exit 1
-    fi
-    
-    # --listオプション
-    if [[ "$1" == "--list" ]]; then
-        show_agents
         exit 0
     fi
     
-    if [[ $# -lt 2 ]]; then
-        show_usage
-        exit 1
+    if [[ "$1" == "--list" ]]; then
+        echo "📋 利用可能なエージェント:"
+        echo "=========================="
+        echo "  pm       → pm:0           (プロジェクト統括責任者)"
+        echo "  techlead → multiagent:0.0 (チームリーダー)"
+        echo "  bp1      → multiagent:0.1 (実行担当者A)"
+        echo "  bp2      → multiagent:0.2 (実行担当者B)"
+        echo "  bp3      → multiagent:0.3 (実行担当者C)"
+        exit 0
     fi
     
-    local agent_name="$1"
+    local receiver="$1"
     local message="$2"
+    local sender="${3:-$(get_sender_role)}"  # 第3引数がなければ自動検出
     
-    # エージェントターゲット取得
-    local target
-    target=$(get_agent_target "$agent_name")
+    # ターゲット取得
+    local target=$(get_agent_target "$receiver")
     
     if [[ -z "$target" ]]; then
-        echo "❌ エラー: 不明なエージェント '$agent_name'"
-        echo "利用可能エージェント: $0 --list"
-        exit 1
-    fi
-    
-    # ターゲット確認
-    if ! check_target "$target"; then
+        echo "❌ エラー: 不明なエージェント '$receiver'"
         exit 1
     fi
     
     # メッセージ送信
-    send_message "$target" "$message"
+    send_message "$target" "$message" "$sender" "$receiver"
     
-    # ログ記録
-    log_send "$agent_name" "$message"
+    # ログ記録（送信元情報も含む）
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    mkdir -p logs
+    echo "[$timestamp] $sender → $receiver: \"$message\"" >> logs/send_log.txt
     
-    echo "送信完了: $agent_name に '$message'"
+    echo "✅ 送信完了: $sender → $receiver"
     
     return 0
 }
 
-main "$@" 
+main "$@"
