@@ -30,3 +30,9 @@ This workflow is designed for a hierarchical group of AI agents to collaborate o
 *   **Comprehensive Role Understanding:** Before starting any work, each agent MUST review the `roles/roles.json` file to understand the complete hierarchical structure and authority boundaries of ALL roles.
 *   **Authority Boundary Enforcement:** Each agent must clearly understand what actions are within their authority and what actions belong to other roles.
 *   **Cross-Role Validation:** When receiving instructions, verify that the instruction is within the sender's authority as defined in `roles.json`. If a role violation is detected, you must halt and report the error.
+
+#### 7. Project Work Directory Protocol (CRITICAL)
+*   **Dedicated Project Directory Mandate:** All development work MUST be performed within a dedicated project subdirectory (e.g., `./projects/project_name/`).
+*   **System File Protection:** BPs are STRICTLY FORBIDDEN from modifying any files in the root directory, `roles/`, `logs/`, or any system configuration files.
+*   **Directory Boundary Enforcement:** Each agent must verify their working directory before any file operations.
+*   **Tech Responsibility:** Tech MUST specify `working_directory` parameter in every task assignment to BPs.

@@ -72,6 +72,7 @@ Execute task distribution to BPs:
         "role_reminder": "You are BP1. You handle ONLY tasks assigned to BP1. Do NOT touch files created by BP2 or BP3 or BP4.",
         "mission_id": "WEB_APP_001",
         "task_id": "DATABASE_SCHEMA_SETUP",
+        "working_directory": "./projects/web_app_001/",
         "specification_document": "plan/01_DATABASE_SCHEMA.md",
         "objective": "Implement the database schema exactly as defined in the provided specification document.",
         "return_protocol": "Execute: ./roles/agent-send.sh tech 'YOUR_JSON_MESSAGE' bp1"
@@ -86,6 +87,7 @@ Execute task distribution to BPs:
         "role_reminder": "You are BP2. You handle ONLY tasks assigned to BP2. Do NOT touch files created by BP1 or BP3 or BP4.",
         "mission_id": "WEB_APP_001",
         "task_id": "USER_AUTH_API_ENDPOINT",
+        "working_directory": "./projects/web_app_001/",
         "specification_document": "plan/02_API_ENDPOINTS.md",
         "objective": "Develop the backend API endpoints for user authentication as specified in the provided document.",
         "return_protocol": "Execute: ./roles/agent-send.sh tech 'YOUR_JSON_MESSAGE' bp2"
@@ -99,6 +101,7 @@ Execute task distribution to BPs:
         "role_reminder": "You are BP3. You handle ONLY tasks assigned to BP3. Do NOT touch files created by BP1 or BP2 or BP4.",
         "mission_id": "WEB_APP_001",
         "task_id": "SQL_QUERY_OPTIMIZATION",
+        "working_directory": "./projects/web_app_001/",
         "specification_document": "plan/03_API_SQL.md",
         "objective": "Implement optimized SQL queries for the API endpoints as specified in the provided document.",
         "return_protocol": "Execute: ./roles/agent-send.sh tech 'YOUR_JSON_MESSAGE' bp3"
@@ -112,6 +115,7 @@ Execute task distribution to BPs:
         "role_reminder": "You are BP4. You handle ONLY tasks assigned to BP4. Do NOT touch files created by BP1 or BP2 or BP3.",
         "mission_id": "WEB_APP_001",
         "task_id": "FRONTEND_UI_COMPONENTS",
+        "working_directory": "./projects/web_app_001/",
         "specification_document": "plan/04_FRONTEND_UI.md",
         "objective": "Implement the frontend UI components and user interface as specified in the provided document.",
         "return_protocol": "Execute: ./roles/agent-send.sh tech 'YOUR_JSON_MESSAGE' bp4"
