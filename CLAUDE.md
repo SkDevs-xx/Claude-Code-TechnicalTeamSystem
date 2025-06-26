@@ -8,20 +8,18 @@ This workflow is designed for a hierarchical group of AI agents to collaborate o
 *   The roles, responsibilities, and authority boundaries for all agents are strictly and exclusively defined in the **`roles/roles.json`** file.
 *   This JSON file is the **single source of truth**. In case of any conflict, the definitions in `roles.json` override any other description.
 *   A brief, human-readable summary of the roles is as follows:
-    - **PM (Project Manager):** The interface to the human user and the project planner.
-    - **TechLead (Technical Lead):** The internal system architect and quality manager.
-    - **BP (Developer):** The specialist developer who executes technical tasks.
+    - **Tech (Technical Lead & Project Manager):** The unified role that interfaces with the human user in Japanese and manages BP developers with JSON.
+    - **BP (Developer):** The specialist developer who executes technical tasks. Multiple BP instances (BP1, BP2, BP3, BP4) work in parallel.
 
 #### 3. Role-Specific Directives
-- **PM**: @roles/pm.md
-- **TechLead**: @roles/techlead.md
+- **Tech**: @roles/tech.md
 - **BP**: @roles/bp.md
 - **Role Database**: @roles/roles.json
 
 #### 4. Communication Protocol (CRITICAL)
-*   **System Boundary:** The `PM` agent serves as the exclusive language interface between the human user and the agent team.
-*   **Human I/O Language:** Communication from the human to the `PM`, and from the `PM` to the human, **must be in Japanese**.
-*   **Internal Operating Language:** All communication **between agents** (`PM` to `TechLead`, `TechLead` to `BP`s, `BP`s to `TechLead`, `TechLead` to `PM`) **must be structured JSON packets**. This is to ensure maximum logical clarity and stability.
+*   **System Boundary:** The `Tech` agent serves as the exclusive language interface between the human user and the BP team.
+*   **Human I/O Language:** Communication from the human to the `Tech`, and from the `Tech` to the human, **must be in Japanese**.
+*   **Internal Operating Language:** All communication **between agents** (`Tech` to `BP`s, `BP`s to `Tech`) **must be structured JSON packets**. This is to ensure maximum logical clarity and stability.
 
 #### 5. Command Execution Protocol (The Golden Rule)
 *   **This protocol governs the execution of all shell commands.**

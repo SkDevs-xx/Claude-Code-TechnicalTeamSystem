@@ -4,11 +4,11 @@
 # エージェント→tmuxターゲット マッピング
 get_agent_target() {
     case "$1" in
-        "pm") echo "pm" ;;
-        "techlead") echo "multiagent:0.0" ;;
-        "bp1") echo "multiagent:0.1" ;;
-        "bp2") echo "multiagent:0.2" ;;
-        "bp3") echo "multiagent:0.3" ;;
+        "tech") echo "tech" ;;
+        "bp1") echo "multiagent:0.0" ;;
+        "bp2") echo "multiagent:0.1" ;;
+        "bp3") echo "multiagent:0.2" ;;
+        "bp4") echo "multiagent:0.3" ;;
         *) echo "" ;;
     esac
 }
@@ -22,11 +22,11 @@ get_sender_role() {
         # tmuxペイン情報から推測
         local pane_info=$(tmux display-message -p '#S:#I.#P')
         case "$pane_info" in
-            "pm:0.0") echo "pm" ;;
-            "multiagent:0.0") echo "techlead" ;;
-            "multiagent:0.1") echo "bp1" ;;
-            "multiagent:0.2") echo "bp2" ;;
-            "multiagent:0.3") echo "bp3" ;;
+            "tech:0.0") echo "tech" ;;
+            "multiagent:0.0") echo "bp1" ;;
+            "multiagent:0.1") echo "bp2" ;;
+            "multiagent:0.2") echo "bp3" ;;
+            "multiagent:0.3") echo "bp4" ;;
             *) echo "unknown" ;;
         esac
     fi
@@ -38,10 +38,9 @@ generate_prefix() {
     local receiver="$2"
     
     case "$sender-$receiver" in
-        "pm-techlead") echo "[MISSION FROM PM]" ;;
-        "techlead-bp"*) echo "[TASK FROM TECHLEAD]" ;;
-        "bp"*"-techlead") echo "[REPORT FROM BP$sender]" ;;
-        "techlead-pm") echo "[STATUS FROM TECHLEAD]" ;;
+        "tech")       echo "[MISSION FROM TECH]" ;;
+        "tech-bp"*)   echo "[TASK FROM TECHLEAD]" ;;
+        "bp"*"-tech") echo "[REPORT FROM ${sender^^}]" ;;
         *) echo "[MESSAGE FROM $sender TO $receiver]" ;;
     esac
 }
@@ -82,15 +81,15 @@ show_usage() {
   $0 --list
 
 環境変数:
-  AGENT_ROLE - 送信元エージェントを指定（pm, techlead, bp1, bp2, bp3）
+  AGENT_ROLE - 送信元エージェントを指定（tech, bp1, bp2, bp3, bp4）
 
 使用例:
   # 送信元を明示的に指定
-  $0 techlead '{"mission_id": "TEST"}' pm
+  $0 tech '{"mission_id": "TEST"}' tech
   
   # 環境変数で送信元を設定
-  export AGENT_ROLE=pm
-  $0 techlead '{"mission_id": "TEST"}'
+  export AGENT_ROLE=tech
+  $0 tech '{"mission_id": "TEST"}'
   
   # 自動検出（tmuxペイン情報から）
   $0 bp1 '{"task_id": "DB_SETUP"}'
@@ -107,11 +106,11 @@ main() {
     if [[ "$1" == "--list" ]]; then
         echo "📋 利用可能なエージェント:"
         echo "=========================="
-        echo "  pm       → pm:0           (プロジェクト統括責任者)"
-        echo "  techlead → multiagent:0.0 (チームリーダー)"
-        echo "  bp1      → multiagent:0.1 (実行担当者A)"
-        echo "  bp2      → multiagent:0.2 (実行担当者B)"
-        echo "  bp3      → multiagent:0.3 (実行担当者C)"
+        echo "  tech    → tech           (プロジェクト統括責任者)"
+        echo "  bp1     → multiagent:0.0 (実行担当者A)"
+        echo "  bp2     → multiagent:0.1 (実行担当者B)"
+        echo "  bp3     → multiagent:0.2 (実行担当者C)"
+        echo "  bp4     → multiagent:0.3 (実行担当者D)"
         exit 0
     fi
     
