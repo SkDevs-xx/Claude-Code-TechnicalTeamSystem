@@ -109,7 +109,7 @@ Claude-Code-TechnicalTeamSystem/
 1. **リポジトリクローン**
    ```bash
    git clone https://github.com/SkDevs-xx/Claude-Code-TechnicalTeamSystem.git
-   cd Claude-Code-tmux-Max
+   cd Claude-Code-TechnicalTeamSystem
    ```
 
 2. **実行権限付与**
