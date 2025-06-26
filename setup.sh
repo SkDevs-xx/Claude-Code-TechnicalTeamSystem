@@ -56,6 +56,7 @@ for i in {0..3}; do
 
     # ウェルカムメッセージ
     tmux send-keys -t "multiagent:0.$i" "echo '=== ${PANE_TITLES[$i]} エージェント ==='" C-m
+    tmux send-keys -t "multiagent:0.$i" 'claude --dangerously-skip-permissions' C-m
 done
 
 log_success "multiagentセッション作成完了"
@@ -68,9 +69,7 @@ tmux new-session -d -s tech
 tmux send-keys -t tech "tmux source ~/.tmux/.tmux.conf" C-m
 tmux send-keys -t tech "cd $(pwd)" C-m
 tmux send-keys -t tech "export PS1='(\[\033[1;35m\]Tech\[\033[0m\]) \[\033[1;32m\]\w\[\033[0m\]\$ '" C-m
-tmux send-keys -t tech "echo '=== Tech セッション ==='" C-m
-tmux send-keys -t tech "echo '技術リーダー兼プロジェクトマネージャー'" C-m
-tmux send-keys -t tech "echo '========================'" C-m
+tmux send-keys -t tech 'claude --dangerously-skip-permissions' C-m
 
 log_success "techセッション作成完了"
 echo ""
@@ -89,31 +88,26 @@ echo ""
 
 # ペイン構成表示
 echo "ペイン構成:"
-echo "  multiagentセッション（4ペイン）:"
+echo "  techセッション（1ペイン）:"
+echo "    Pane 0: Tech (Technical Lead & Project Manager)"
+echo ""
+echo "    multiagentセッション（4ペイン）:"
 echo "    Pane 0: bp1       (Developer A)"
 echo "    Pane 1: bp2       (Developer B)"
 echo "    Pane 2: bp3       (Developer C)"
 echo "    Pane 3: bp4       (Developer D)"
-echo ""
-echo "  techセッション（1ペイン）:"
-echo "    Pane 0: Tech (Technical Lead & Project Manager)"
 
 echo ""
 log_success "環境セットアップ完了"
 echo ""
 echo " 次のステップ:"
 echo "  1. セッションアタッチ:"
-echo "     tmux attach-session -t multiagent  # BPチーム アタッチ"
 echo "     tmux attach-session -t tech        # Tech アタッチ"
+echo "     tmux attach-session -t multiagent  # BPチーム アタッチ"
 echo ""
-echo "  2. Claude Code起動:"
-echo "     # 手順1: tech認証"
-echo "     tmux send-keys -t tech 'claude --dangerously-skip-permissions' C-m"
-echo "     for i in {0..3}; do tmux send-keys -t multiagent:0.\$i 'claude --dangerously-skip-permissions' C-m; done"
-echo ""
-echo "  3. 指示書確認:"
+echo "  2. 指示書確認:"
 echo "     Tech        : roles/tech.md"
 echo "     BP1,2,3,4   : roles/bp.md"
 echo "     システム構造 : CLAUDE.md"
 echo ""
-echo "  4. デモ実行: Techに「あなたはTechです。～を作成したいです。」と入力" 
+echo "  3 デモ実行: Techに「あなたはTechです。～を作成したいです。まずはplanの作成を行ってください。」と入力" 
