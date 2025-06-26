@@ -85,7 +85,7 @@
 ## 📁 プロジェクト構成
 
 ```
-Claude-Code-tmux-Max/
+Claude-Code-TechnicalTeamSystem/
 ├── roles/                 # エージェント定義
 │   ├── roles.json         # 役割・権限の厳密な定義
 │   ├── tech.md            # TECHエージェント指示書
@@ -108,7 +108,7 @@ Claude-Code-tmux-Max/
 
 1. **リポジトリクローン**
    ```bash
-   git clone https://github.com/SkDevs-xx/Claude-Code-tmux-Max.git
+   git clone https://github.com/SkDevs-xx/Claude-Code-TechnicalTeamSystem.git
    cd Claude-Code-tmux-Max
    ```
 
