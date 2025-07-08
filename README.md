@@ -1,4 +1,4 @@
-# Claude Code tmux Max: AI マルチエージェント開発フレームワーク
+# Claude Code:マルチエージェント開発フレームワーク
 
 **⚡ 5つのClaude Codeインスタンスが協調して動作する、世界初の実用的AIチーム開発システム**
 
