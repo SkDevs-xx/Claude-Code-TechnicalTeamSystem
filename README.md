@@ -55,8 +55,11 @@
 # 従来: 誰からのメッセージか不明
 ./agent-send.sh tech '{"status": "complete"}'
 
-# 本システム: 送信元を第3引数で明示
-./agent-send.sh tech '{"status": "complete"}' bp1
+# 本システム: 送信元を第3引数で明示または自動検出
+./roles/agent-send.sh tech '{"status": "complete"}' bp1
+# または環境変数で送信元を指定
+export AGENT_ROLE=bp1
+./roles/agent-send.sh tech '{"status": "complete"}'
 ```
 
 ### 3. 役割境界の憲法的強制
@@ -91,6 +94,11 @@ Claude-Code-TechnicalTeamSystem/
 │   ├── tech.md            # TECHエージェント指示書
 │   ├── bp.md              # 開発者エージェント指示書
 │   └── agent-send.sh      # エージェント間通信スクリプト
+├── projects/              # プロジェクト作業ディレクトリ
+│   └── [project_name]/    # 各プロジェクトの専用ディレクトリ
+├── logs/                  # 通信ログ（実行時に自動作成）
+│   └── send_log.txt       # エージェント間通信ログ
+├── tmp/                   # 一時ファイル（実行時に自動作成）
 ├── CLAUDE.md              # システム全体の憲法
 ├── README.md              # このファイル
 ├── setup.sh               # 環境セットアップスクリプト
@@ -129,12 +137,12 @@ Claude-Code-TechnicalTeamSystem/
    # BPチームセッション開始（別ターミナル）
    tmux attach-session -t multiagent
    
-   # 各ペインでClaude認証
+   # 各ペインでClaude認証（setup.shが自動実行）
    claude --dangerously-skip-permissions
    
    # 役割認識（各ペインで実行）
-   Tech: あなたはTechです
-   BP1-4: （自動的にrole_reminderで認識）
+   Tech: あなたはTechです。CLAUDE.mdとroles/tech.mdを確認してください。
+   BP1-4: 各BPペインで手動でClaude Code起動後、role_reminderで認識
    ```
 
 ## 🎮 実際の使い方
@@ -143,14 +151,15 @@ Claude-Code-TechnicalTeamSystem/
 Techペインで日本語指示を入力：
 ```
 あなたはTechです。HTMLとJavaScriptで動作するテトリスゲームを作成してください。
+まずは仕様書の作成から開始してください。
 ```
 
 ### ステップ2: 自動ワークフロー実行
 以下が自動的に実行されます：
 
-1. **Tech**: 日本語指示を英語仕様書に変換
-2. **Tech**: 仕様を技術タスクに分解
-3. **BP1,2,3,4**: 各担当コンポーネントを並行開発
+1. **Tech**: 日本語指示を英語仕様書に変換（`plan/`ディレクトリ内）
+2. **Tech**: 仕様を技術タスクに分解してJSON形式でBPに送信
+3. **BP1,2,3,4**: 各担当コンポーネントを並行開発（`projects/`ディレクトリ内）
 4. **Tech**: 統合テスト・品質チェック
 5. **Tech**: 完成報告を日本語でユーザーに通知
 
@@ -210,6 +219,9 @@ tmux list-sessions
 
 # ログ確認
 cat logs/send_log.txt
+
+# 通信テスト例
+./roles/agent-send.sh tech '{"test": "connection"}' bp1
 ```
 
 ### Claude Code認証問題
@@ -279,4 +291,11 @@ MIT License - 詳細は[LICENSE](LICENSE)ファイルを参照
 
 ---
 
-**🎯 今すぐ始める**: Techペインで「あなたはTechです。」から始めて、**5つのAIが協調する驚異の開発体験**を味わってください！
+**🎯 今すぐ始める**: Techペインで「あなたはTechです。CLAUDE.mdとroles/tech.mdを確認してください。」から始めて、**5つのAIが協調する驚異の開発体験**を味わってください！
+
+### 🔧 重要な注意事項
+
+1. **プロジェクトディレクトリ**: 全ての開発作業は`projects/`ディレクトリ内で行われます
+2. **通信ログ**: 全てのエージェント間通信は`logs/send_log.txt`に記録されます
+3. **役割の厳格な分離**: 各エージェントは決められた役割のみを実行します
+4. **日本語⇔JSON変換**: TechエージェントがユーザーとBPの間の言語変換を担当します
